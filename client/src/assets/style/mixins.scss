@@ -1,0 +1,103 @@
+@import "variables";
+
+@mixin sidePopup($width) {
+  display: block;
+  width: $width;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding: 24px;
+  background: $color-smoke;
+  box-shadow: $props-shadow;
+  z-index: 300;
+  transform: translateX(100%);
+  transition: all 0.5s ease-in-out;
+  &.show {
+    transform: translateX(0);
+  }
+}
+
+@mixin column($align : center) {
+  display: flex;
+  flex-direction: column;
+  align-items: $align;
+}
+
+@mixin buttonActionProfile() {
+  flex: 0.5 0 0;
+  text-align: center;
+  padding: 8px 12px;
+  font-weight: bold;
+  color: $color-dark;
+  cursor: pointer;
+  transition: 0.2s;
+  &:hover {
+    background-color: $color-mocco-opasy;
+  }
+}
+
+@mixin closeBtn($width: 20px, $height:20px , $top: 24px, $left: 24px ) {
+  display: block;
+  width: $width;
+  height: $height;
+  position: absolute;
+  top: $top;
+  left: $left;
+  background-image: url("./../../assets/img/close.svg");
+  background-size: 18px 18px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  border-radius: 4px;
+  transform: rotate(0);
+  transition: 0.2s;
+  &:hover {
+    transform: rotate(90deg);
+  }
+}
+
+@mixin homeTitles($before) {
+  margin-bottom: 32px;
+  position: relative;
+  font-size: 32px;
+  &:before {
+    content: $before;
+    position: absolute;
+    top: -48px;
+    left: 0;
+    font-size: 62px;
+    text-shadow: 10px 0px 2px rgba(67, 59, 156, 0.1);
+    color: transparent;
+    @media (max-width: 564px){
+      font-size: 48px;
+      top: -38px;
+    }
+    @media (max-width: 424px) {
+      display: none;
+    }
+  }
+}
+
+@mixin circleBtn($radius: 50%, $width: 100px, $height: 100px, $line: 100px) {
+  display: block;
+  width: $width;
+  height: $height;
+  background-color: $color-mocco;
+  color: $color-smoke;
+  font-size: 16px;
+  font-weight: 400;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: $line;
+  vertical-align: middle;
+  border-radius: $radius;
+  box-shadow: $props-shadow;
+  transition: 0.3s;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      box-shadow: $props-shadow_hover;
+      background-color: $color-mocco-opasy;
+    }
+  }
+}

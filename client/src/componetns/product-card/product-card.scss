@@ -1,0 +1,121 @@
+@import '../../../src/assets/style/variables';
+@import '../../../src/assets/style/mixins';
+
+.product-card {
+  position: relative;
+  padding: 20px;
+  box-shadow: $props-shadow;
+  border-radius: 4px;
+  transition: 0.3s;
+  cursor: pointer;
+  background-color: $color-smoke;
+  max-width: 290px;
+  margin: 0 auto;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      box-shadow: 0 0 4px 0 $color-mocco;
+    }
+  }
+
+  &__image {
+    width: 100%;
+  }
+  &__image-wrapp {
+    width: 100%;
+    min-width: 200px;
+    height: 250px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  &__info {
+    @include column(flex-start);
+    margin-bottom: 12px;
+    width: 100%;
+    max-width: 190px;
+    }
+
+  &__add {
+    width: 100%;
+    padding: 8px 16px;
+    font-weight: bold;
+    background-color: $color-mocco;
+    color: $color-smoke;
+    transition: 0.3s;
+    cursor: pointer;
+    border-radius: 2px;
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        background-color: $color-nude;
+      }
+    }
+  }
+  &__go {
+    width: 100%;
+    padding: 8px 16px;
+    font-weight: bold;
+    background-color: $color-red;
+    color: $color-smoke;
+    transition: 0.3s;
+    cursor: pointer;
+    border-radius: 2px;
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        background-color: $color-nude;
+      }
+    }
+  }
+
+  &__price {
+    font-size: 16px;
+    color: $color-mocco;
+  }
+
+  &__name {
+    width: 100%;
+    text-align: left;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+
+  &__marks {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__mark {
+    padding: 2px 4px;
+    width: 60px;
+    border-radius: 2px;
+    color: $color-smoke;
+    text-align: center;
+
+    &--sale {
+      background-color: $color-red;
+    }
+
+    &--new {
+      background-color: $color-nude;
+    }
+
+    &--top {
+      background-color: $color-mocco;
+    }
+  }
+
+}
+
+//@media (max-width: 1052px) {
+//  .product-card {
+//    &__name{
+//      width: 180px;
+//    }
+//  }
+//}

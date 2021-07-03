@@ -1,0 +1,16 @@
+@import "./../../../assets/style/variables";
+
+
+.create {
+  &__input {
+    width: 100%;
+  }
+}
+.previews {
+  display: flex;
+  justify-content: center;
+}
+
+.admin-product__edit {
+  margin-bottom: 20px;
+}

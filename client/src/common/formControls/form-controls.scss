@@ -1,0 +1,16 @@
+.form-controls{
+  position: relative;
+}
+.form-controls.error input,
+.form-controls.error textarea {
+  border-bottom: crimson solid 1px;
+}
+
+.form-controls.error span {
+  position: absolute;
+  bottom: -14px;
+  left: 8px;
+  font-weight: 400;
+  font-size: 10px;
+  color: crimson;
+}

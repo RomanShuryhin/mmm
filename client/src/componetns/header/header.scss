@@ -1,0 +1,42 @@
+@import '../../../src/assets/style/variables';
+@import '../../../src/assets/style/mixins';
+
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 68px;
+  padding: 12px 0;
+  z-index: 200;
+  background: $color-smoke;
+  &.home{
+    background: transparent;
+  }
+  &.hide {
+    opacity: 0;
+  }
+  &.fix{
+    background: $color-smoke;
+    transition: 0.5s;
+    opacity: 0;
+    position: fixed;
+    &--show {
+      opacity: 1;
+    }
+  }
+
+  &__wrapp {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__logo {
+    width: 100px;
+  }
+  &-nav {
+    padding: 0 36px;
+  }
+}
+

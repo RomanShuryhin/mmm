@@ -1,0 +1,16 @@
+@import './../src/assets/style/variables';
+@import './../src/assets/style/mixins';
+
+.container {
+  max-width: 1200px;
+  padding: 0 15px;
+  margin: 0 auto;
+}
+
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+}
+
+
