@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
-    "seeder": "node utils/seeder.js"
+    "dev": "SET NODE_ENV=DEV& nodemon index.js",
+    "prod": "SET NODE_ENV=PRODUCTION& nodemon index.js",
+    "seeder": "node utils/seeder.js",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false && npm install --prefix client && npm run build --prefix client"
   },
   "keywords": [],
   "author": "",

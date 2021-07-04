@@ -1,4 +1,3 @@
-require('dotenv').config({path: './.env'});
 const connectDB = require('./config/db');
 const express = require('express');
 const cors = require ('cors');
@@ -19,6 +18,8 @@ const textBlockRouter = require('./routes/textBlockRouter');
 const bannerRouter = require('./routes/bannerRouter');
 
 const app = express();
+
+if (process.env.NODE_ENV !== 'PRODUCTION') require('dotenv').config({path: './.env'});
 
 connectDB();
 
