@@ -12,8 +12,6 @@ router.post('/login/forgot', authController.forgotPassword);
 
 router.post('/login/reset', me, authController.resetPassword);
 
-router.get('/user', me, authController.getUsers);
-
 router.get('/user/info', me, authController.getUserInfo);
 
 router.get('/user/all_info', me,  authController.getAllUserInfo);
