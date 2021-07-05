@@ -6,7 +6,7 @@ const { google } = require('googleapis');
 const { OAuth2 } = google.auth;
 
 const client = new OAuth2(process.env.EMAIL_SERVICE_CLIENT_ID);
-const { CLIENT_URL } = process.env;
+// const { CLIENT_URL } = process.env;
 
 module.exports.signup = async (req, res) => {
 
@@ -33,7 +33,8 @@ module.exports.signup = async (req, res) => {
 
 		const activationToken = createActivationToken(newUser);
 
-		const url = ` ${process.env.CLIENT_URL}/activate/${activationToken} `;
+		// const url = ` ${process.env.CLIENT_URL}/activate/${activationToken} `;
+		const url = ` ${req.protocol}://${req.get('host')}/activate/${activationToken} `;
 
 		sendMail(email, url, 'Активируйте свою почту');
 
@@ -115,7 +116,6 @@ module.exports.forgotPassword = async (req, res) => {
 module.exports.resetPassword = async (req, res) => {
   try {
 	  const { password } = req.body;
-	  console.log(password);
 
 	  const hashedPass = await bcrypt.hashSync(password, 12);
 
@@ -158,19 +158,6 @@ module.exports.logout = async (req, res) => {
 		return res.status(500).json({ error: err.message });
 	}
 }
-
-module.exports.updateUser = async (req, res) => {
-	try {
-		const { avatar } = req.body;
-		const updateUser = await User.findOneAndUpdate(
-			{ _id: req.user.id },
-			{ avatar }
-		);
-		res.status(200).json({ message: 'Профиль успешно обновлён!' });
-	}	catch (err) {
-		return res.status(500).json({ error: err.message });
-	}
-};
 
 module.exports.updateUserRole = async (req, res) => {
 	try {

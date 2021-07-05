@@ -46,6 +46,14 @@ module.exports.uploadAvatar = async (req, res) => {
 	try {
 		const basePath = `${req.protocol}://${req.get('host')}/`;
 
+		const findAvatar = await User.findById(req.user.id);
+
+		let replacePath = findAvatar.avatar.replace(basePath, '');
+
+		if (req.file) {
+			fs.unlinkSync(replacePath);
+		}
+
 		const user = await User.findByIdAndUpdate(
 			{_id: req.user.id},
 			{avatar: req.file ? basePath + req.file.path : ''},

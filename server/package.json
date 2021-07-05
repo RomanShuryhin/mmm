@@ -7,7 +7,8 @@
     "dev": "SET NODE_ENV=DEV& nodemon index.js",
     "prod": "SET NODE_ENV=PRODUCTION& nodemon index.js",
     "seeder": "node utils/seeder.js",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false && npm install --prefix client && npm run build --prefix client"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false && npm install --prefix client && npm run build --prefix client",
+    "start": "react-scripts start --prefix client"
   },
   "keywords": [],
   "author": "",

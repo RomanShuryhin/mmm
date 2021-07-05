@@ -18,8 +18,6 @@ router.get('/user/all_info', me,  authController.getAllUserInfo);
 
 router.get('/user/logout', me, authController.logout);
 
-router.patch('/user/update', me, authController.updateUser);
-
 router.patch('/user/update_role/:id', me, authController.updateUserRole);
 
 router.delete('/user/delete/:id', me, authController.deleteUser);
