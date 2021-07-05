@@ -19,9 +19,10 @@ const bannerRouter = require('./routes/bannerRouter');
 
 const app = express();
 
-if (process.env.NODE_ENV !== 'PRODUCTION') require('dotenv').config({path: './.env'});
+if (process.env.NODE_ENV !== 'PRODUCTION') require('dotenv').config({path: 'server/.env'});
 
 connectDB();
+
 
 app.use(morgan('dev'));
 //если не загружать изображения в локал сторедж, то строка ниже не нужна
@@ -50,10 +51,10 @@ app.use('/api', bannerRouter);
 const PORT = process.env.PORT || 5000;
 
 if (process.env.NODE_ENV === 'PRODUCTION') {
-	app.use(express.static( path.join(__dirname, '../client/build')));
+	app.use(express.static( path.join(__dirname, '../client/build' )));
 
 	app.get('*', (req, res) =>  {
-		res.sendFile(path.resolve(__dirname, '../client/build/index.html'));
+		res.sendFile(path.resolve( __dirname, '../client/build/index.html' ));
 	})
 }
 
