@@ -26,9 +26,9 @@ connectDB();
 
 app.use(morgan('dev'));
 //если не загружать изображения в локал сторедж, то строка ниже не нужна
-app.use('/public/uploads', express.static(__dirname + '/public/uploads'));
-app.use('/public/avatar', express.static(__dirname + '/public/avatar'));
-app.use('/public/images', express.static(__dirname + '/public/images'));
+app.use('server/public/uploads', express.static(__dirname + '/server/public/uploads'));
+app.use('server/public/avatar', express.static(__dirname + '/server/public/avatar'));
+app.use('server/public/images', express.static(__dirname + '/server/public/images'));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
