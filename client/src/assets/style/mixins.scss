@@ -16,11 +16,21 @@
   &.show {
     transform: translateX(0);
   }
+  @media (max-width: 942px) {
+    height: 100%;
+  }
 }
 
 @mixin column($align : center) {
   display: flex;
   flex-direction: column;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: $align;
 }
 

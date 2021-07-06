@@ -2,16 +2,24 @@ import {BaseThunkType, InferActionsTypes} from "./store";
 import {FormAction, stopSubmit} from "redux-form";
 import {AuthAPI} from "../api/api-auth";
 import {getProfileData} from "./user-reducer";
-import {STATE_TYPES} from "../constants/constants";
+import {ErrorType} from "../types/types";
 
 const SIGN_UP = 'auth-reducer/SIGH_UP';
 const IS_AUTH = 'auth-reducer/IS_AUTH';
+const IS_FETCHING = 'auth-reducer/IS_FETCHING';
+const SET_ERROR = 'auth-reducer/SET_ERROR';
+const TURN_OF_SUCCESS_BANNER = 'auth-reducer/TURN_OF_SUCCESS_BANNER';
 
 const initialState = {
     email: null as string | null,
     password: null as string | null,
     isSuccessReg: false,
     isAuth: false,
+    isFetching: false,
+    isError: {
+        errorText: '',
+        toggle: false,
+    } as ErrorType,
 };
 
 const AuthReducer = (state = initialState, action: ActionType): AuthInitialStateType => {
@@ -20,7 +28,12 @@ const AuthReducer = (state = initialState, action: ActionType): AuthInitialState
             return {...state, isSuccessReg: true, email: action.email};
         case IS_AUTH:
             return {...state, isAuth: action.isAuth};
-
+        case IS_FETCHING:
+            return {...state, isFetching: action.isFetching};
+        case SET_ERROR :
+            return {...state, isError: action.isError};
+        case TURN_OF_SUCCESS_BANNER:
+            return {...state, isSuccessReg: false}
         default:
             return state;
     }
@@ -35,19 +48,33 @@ export const actionsAuth = {
         type: IS_AUTH,
         isAuth
     } as const),
+    setIsFetching: (isFetching: boolean) => ({
+        type: IS_FETCHING,
+        isFetching
+    } as const),
+    setError: (isError: ErrorType) => ({
+        type: SET_ERROR,
+        isError,
+    } as const),
+    turnOfIsSuccess: () => ({
+        type: TURN_OF_SUCCESS_BANNER,
+    } as const)
 
 
 };
 
 export const getIsAuth = ():ThunkType => async (dispatch) => {
+    dispatch(actionsAuth.setIsFetching(true));
     try {
         await AuthAPI.me();
         dispatch(await getProfileData());
-        dispatch(actionsAuth.setIsAuth(true))
+        dispatch(actionsAuth.setIsAuth(true));
+
     }catch (err) {
-        dispatch(actionsAuth.setIsAuth(false));
         console.log(err.response);
+        dispatch(actionsAuth.setIsAuth(false));
     }
+    dispatch(actionsAuth.setIsFetching(false));
 };
 
 export const signUpThunk = (email: string, password: string): ThunkType => async (dispatch) => {
@@ -60,14 +87,31 @@ export const signUpThunk = (email: string, password: string): ThunkType => async
 };
 
 export const loginThunk = (email: string, password: string):ThunkType => async (dispatch) => {
+    dispatch(actionsAuth.setIsFetching(true));
     try {
         await AuthAPI.login(email,password);
         dispatch(await getProfileData());
         dispatch(actionsAuth.setIsAuth(true))
     }catch (err) {
-       dispatch(stopSubmit('login', {_error: err.response.data.message}));
+        if(err.response.status === 400){
+            dispatch(stopSubmit('login', {_error: err.response.data.message}));
+        }
+    }
+    dispatch(actionsAuth.setIsFetching(false));
+};
+
+export const AdminLoginThunk = (email: string, password: string):ThunkType => async (dispatch) => {
+    try {
+        await AuthAPI.login(email,password);
+        dispatch(await getProfileData());
+        dispatch(actionsAuth.setIsAuth(true))
+    }catch (err) {
+        if(err.response.status === 400){
+            dispatch(actionsAuth.setError({errorText: err.response.data.message, toggle: true}));
+        }
     }
 };
+
 
 export const activateUser = (key: string):ThunkType => async (dispatch) => {
     try {

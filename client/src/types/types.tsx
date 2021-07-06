@@ -81,6 +81,7 @@ export type ProfileDataType = {
     phone: string
     name: string
     photo?: string
+    avatar: string
 }
 
 export type ProfileFormValueType = {email: string
@@ -135,3 +136,8 @@ export type AboutTextType = {
 }
 
 export type AboutList = Array<AboutImage>;
+
+export type ErrorType = {
+    errorText: string
+    toggle: boolean
+}
