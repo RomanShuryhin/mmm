@@ -19,7 +19,7 @@ const bannerRouter = require('./routes/bannerRouter');
 
 const app = express();
 
-if (process.env.NODE_ENV === 'PRODUCTION') require('dotenv').config({path: 'server/.env'});
+if (process.env.NODE_ENV !== 'PRODUCTION') require('dotenv').config({path: 'server/.env'});
 
 connectDB();
 

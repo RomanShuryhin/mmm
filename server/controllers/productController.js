@@ -24,6 +24,7 @@ module.exports.createProduct = async (req, res) => {
 			category: req.body.category,
 			description: req.body.description,
 			shortDescr: req.body.shortDescr,
+			subText: req.body.subText,
 			color: req.body.color,
 			imageSrc: req.file ? `${basePath}${req.file.path}`: '',
 			sale: req.body.sale,
@@ -31,7 +32,6 @@ module.exports.createProduct = async (req, res) => {
 			itsNew: req.body.itsNew,
 			totalCount: req.body.totalCount
 		});
-
 
 		// отмена загрузки изображения в локальное хранилище
 		// fs.unlinkSync(req.file.path);
