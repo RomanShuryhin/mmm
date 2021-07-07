@@ -7,11 +7,11 @@ const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
 		//проверка ключа файла для сохранения в нужную папку
 			if (file.fieldname === 'imageSrc') {
-				cb(null, 'server/public/uploads');
+				cb(null, '/public/uploads');
 			} else if (file.fieldname === 'image'){
-				cb(null, 'server/public/images');
+				cb(null, '/public/images');
 			} else {
-				cb(null, 'server/public/avatar/');
+				cb(null, '/public/avatar/');
 			}
 		 },
 	filename: (req, file, cb) => {

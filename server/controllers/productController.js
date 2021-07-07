@@ -65,28 +65,9 @@ module.exports.getProducts = async (req, res) => {
 			formattedParams[key] = value.split(',');
 		}
 
-		// let queryStr = JSON.stringify(reqQuery);
-
-		// queryStr = queryStr.replace( /\b(gt|gte|lt|lte|in)\b/g,
-		// 	(match) => `$${match}`);
-
 		query = Product.find(formattedParams);
 
 		query2 = Product.find(formattedParams);
-
-		// if (req.query.sort) {
-		// 	const sortByArr = req.query.sort.split(',');
-		//
-		// 	const sortByStr = sortByArr.join(' ');
-		//
-		// 	query = query.sort(sortByStr);
-		//
-		// 	query2 = query2.sort(sortByStr);
-		// } else {
-		// 	query = query.sort('-price');
-		//
-		// 	query2 = query2.sort('-price');
-		// }
 
 		const productsCount = await query2.countDocuments();
 
