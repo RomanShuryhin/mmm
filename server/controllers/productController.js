@@ -126,6 +126,14 @@ module.exports.getProductById = async (req, res) => {
 		if (!product)
 			return res.status(400).json({message: 'Товар не найден!'});
 
+		// replace image patch with correct protocol and host
+		const basePath = `${req.protocol}://${req.get('host')}/`;
+
+		if (process.env.NODE_ENV === 'PRODUCTION') {
+			let replacePath = product.imageSrc.replace('http://localhost:5000/', `${basePath}`);
+			product.imageSrc = replacePath;
+		}
+
 		res.status(200).json({message: 'ok', product});
 	} catch (err) {
 		return res.status(500).json({message: err.message});
