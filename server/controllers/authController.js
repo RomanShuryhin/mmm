@@ -7,6 +7,7 @@ const { OAuth2 } = google.auth;
 
 const client = new OAuth2(process.env.EMAIL_SERVICE_CLIENT_ID);
 const { CLIENT_URL } = process.env;
+const basePath = `${req.protocol}://${req.get('host')}/`;
 
 module.exports.signup = async (req, res) => {
 
@@ -33,7 +34,8 @@ module.exports.signup = async (req, res) => {
 
 		const activationToken = createActivationToken(newUser);
 
-		const url = ` ${process.env.CLIENT_URL}/activate/${activationToken} `;
+		// const url = ` ${process.env.CLIENT_URL}/activate/${activationToken} `;
+		const url = ` ${basePath}/activate/${activationToken} `;
 
 		sendMail(email, url, 'Активируйте свою почту');
 
@@ -102,7 +104,9 @@ module.exports.forgotPassword = async (req, res) => {
 			return res.status(400).json({ message: 'Емейл не найден' });
 
 		const accessToken = createActivationToken({ id: user.id });
-		const url = ` ${process.env.CLIENT_URL}/login/reset/${accessToken} `;
+
+		// const url = ` ${process.env.CLIENT_URL}/login/reset/${accessToken} `;
+		const url = ` ${basePath}/activate/${accessToken} `;
 
 		sendMail(email, url, 'Сбросить пароль');
 
