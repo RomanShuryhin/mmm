@@ -26,7 +26,7 @@ connectDB();
 
 app.use(morgan('dev'));
 //если не загружать изображения в локал сторедж, то строка ниже не нужна
-app.use('./public/uploads', express.static(__dirname + './public/uploads'));
+app.use('./public/uploads', express.static('./public/uploads'));
 app.use('/public/avatar', express.static(__dirname + '/public/avatar'));
 app.use('/public/images', express.static(__dirname + '/public/images'));
 app.use(express.json());
