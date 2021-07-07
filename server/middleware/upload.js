@@ -1,17 +1,19 @@
 const multer = require('multer');
 const moment = require('moment');
 const fs = require('fs');
+const path = require('path');
+
 
 
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
 		//проверка ключа файла для сохранения в нужную папку
 			if (file.fieldname === 'imageSrc') {
-				cb(null, '/public/uploads');
+				cb(null, './public/uploads');
 			} else if (file.fieldname === 'image'){
-				cb(null, '/public/images');
+				cb(null, './public/images');
 			} else {
-				cb(null, '/public/avatar/');
+				cb(null, './public/avatar/');
 			}
 		 },
 	filename: (req, file, cb) => {
