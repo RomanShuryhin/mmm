@@ -1,3 +1,5 @@
+if (process.env.NODE_ENV !== 'PRODUCTION') require('dotenv').config({path: 'server/.env'});
+
 const connectDB = require('./config/db');
 const express = require('express');
 const cors = require ('cors');
@@ -20,8 +22,6 @@ const stripeRouter = require('./routes/stripeRouter');
 const orderRouter = require('./routes/orderRouter');
 
 const app = express();
-
-if (process.env.NODE_ENV !== 'PRODUCTION') require('dotenv').config({path: 'server/.env'});
 
 connectDB();
 
