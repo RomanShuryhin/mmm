@@ -27,5 +27,13 @@ export const AuthAPI = {
     },
     me() {
         return instance.get('/api', {}).then(res => res);
-    }
+    },
+    google(googleData: any, tokenId: string) {
+        const data = {
+            googleData,
+            tokenId
+        };
+        return instance.post('/api/google_login', data).then(res => res);
+    },
+
 };

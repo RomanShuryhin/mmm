@@ -65,9 +65,28 @@ module.exports.getProducts = async (req, res) => {
 			formattedParams[key] = value.split(',');
 		}
 
+		// let queryStr = JSON.stringify(reqQuery);
+
+		// queryStr = queryStr.replace( /\b(gt|gte|lt|lte|in)\b/g,
+		// 	(match) => `$${match}`);
+
 		query = Product.find(formattedParams);
 
 		query2 = Product.find(formattedParams);
+
+		// if (req.query.sort) {
+		// 	const sortByArr = req.query.sort.split(',');
+		//
+		// 	const sortByStr = sortByArr.join(' ');
+		//
+		// 	query = query.sort(sortByStr);
+		//
+		// 	query2 = query2.sort(sortByStr);
+		// } else {
+		// 	query = query.sort('-price');
+		//
+		// 	query2 = query2.sort('-price');
+		// }
 
 		const productsCount = await query2.countDocuments();
 
@@ -107,14 +126,6 @@ module.exports.getProductById = async (req, res) => {
 		if (!product)
 			return res.status(400).json({message: 'Товар не найден!'});
 
-		// replace image patch with correct protocol and host
-		const basePath = `${req.protocol}://${req.get('host')}/`;
-
-		if (process.env.NODE_ENV === 'PRODUCTION') {
-			let replacePath = product.imageSrc.replace('http://localhost:5000/', `${basePath}`);
-			product.imageSrc = replacePath;
-		}
-
 		res.status(200).json({message: 'ok', product});
 	} catch (err) {
 		return res.status(500).json({message: err.message});
@@ -146,8 +157,9 @@ module.exports.updateCollection = async (req, res) => {
 	try {
     //here we change the values of the collection, if necessary
 		// const newProducts = await Product.updateMany( {}, {$rename:{"aaaaa": "productIndex"}});
-		await Category.deleteMany();
-		res.status(200).json({message: 'udalil'});
+		const newProducts = await Product.updateMany( {'itsNew': true}, {$rename: {"productIndex": "qty"}});
+		// await Category.deleteMany();
+		res.status(200).json({message: 'qty added', newProducts});
 	} catch (err) {
 		return res.status(500).json({message: err.message});
 	}

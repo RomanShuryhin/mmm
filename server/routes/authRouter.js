@@ -18,6 +18,8 @@ router.get('/user/all_info', me,  authController.getAllUserInfo);
 
 router.get('/user/logout', me, authController.logout);
 
+router.patch('/user/update', me, authController.updateUser);
+
 router.patch('/user/update_role/:id', me, authController.updateUserRole);
 
 router.delete('/user/delete/:id', me, authController.deleteUser);
@@ -25,5 +27,6 @@ router.delete('/user/delete/:id', me, authController.deleteUser);
 //social login
 router.post('/google_login', authController.googleLogin);
 router.post('/facebook_login', authController.facebookLogin);
+router.post('/facebook_login', authController.iosLogin);
 
 module.exports = router;

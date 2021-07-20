@@ -141,3 +141,38 @@ export type ErrorType = {
     errorText: string
     toggle: boolean
 }
+
+export type CheckoutType = {
+    name: string,
+    surnname: string
+    city: string
+    build: string
+    company?: string
+    country: string
+    delivery: string
+    email: string
+    kod: string
+    phone: string
+    policy?: true
+    post_box?: string
+    street: string
+}
+
+export type CustomerType = {
+    build: string
+    city: string
+    company: string
+    country: string
+    delivery: string
+    email: string
+    flat?: string
+    kod: string
+    name: string
+    payId: string
+    phone: string
+    policy?: string
+    post_box: string
+    products: Array<{title: string, price: number, qty: number}>
+    street: string
+    surname: string
+}

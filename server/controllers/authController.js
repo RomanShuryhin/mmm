@@ -6,7 +6,7 @@ const { google } = require('googleapis');
 const { OAuth2 } = google.auth;
 
 const client = new OAuth2(process.env.EMAIL_SERVICE_CLIENT_ID);
-const { CLIENT_URL } = process.env;
+// const { CLIENT_URL } = process.env;
 
 module.exports.signup = async (req, res) => {
 
@@ -199,12 +199,9 @@ module.exports.googleLogin = async (req, res) => {
 	try {
 		const { tokenId } = req.body;
 
-		console.log('tokenId', tokenId);
-
 		const verify = await client.verifyIdToken({ idToken: tokenId,  audience: process.env.EMAIL_SERVICE_CLIENT_ID });
 
-		console.log(verify);
-		const { email_verified, email } = verify.payload;
+		const { email_verified, email, given_name, picture } = verify.payload;
 
 		const password = email + process.env.GOOGLE_SECRET;
 
@@ -229,7 +226,12 @@ module.exports.googleLogin = async (req, res) => {
 
 					res.json({ message: 'Авторизация прошла успешно!'});
 			} else {
-				const newUser = new User({ email, password: hashedPass });
+				const newUser = new User({
+					email,
+					password: hashedPass,
+					avatar: picture,
+					name: given_name
+				});
 	
 				await newUser.save();
 
@@ -249,7 +251,104 @@ module.exports.googleLogin = async (req, res) => {
 };
 
 module.exports.facebookLogin = async (req, res) => {
+	try {
+		const {accessToken, userID} = req.body;
 
+		const URL = `https://graph.facebook.com/v2.9/${userID}/?fields=id,name,email,picture&access_token=${accessToken}`;
+
+		const data = await fetch(URL).then(res => res.json()).then(res => {return res});
+
+		const {email, name, picture} = data;
+
+		const password = email + process.env.FACEBOOK_SECRET;
+
+		const passwordHash = await bcrypt.hash(password, 12);
+
+		const user = await User.findOne({email});
+
+		if(user){
+			const isMatch = await bcrypt.compare(password, user.password);
+
+			if(!isMatch)
+				return res.status(400).json({message: "Неправильный пароль"});
+
+			const refreshtoken = createRefreshToken({id: user._id});
+
+			res.cookie('refreshtoken', refreshtoken, {
+				httpOnly: true,
+				path: '/api',
+				maxAge: 24*60*60*1000
+			});
+
+			res.json({message: "Авторизация прошла успешно!"});
+
+		}else{
+			const newUser = new User({
+				name, email, password: passwordHash, avatar: picture.data.url
+			});
+
+			await newUser.save()
+
+			const refreshtoken = createRefreshToken({id: newUser._id});
+
+			res.cookie('refreshtoken', refreshtoken, {
+				httpOnly: true,
+				path: '/api',
+				maxAge: 24*60*60*1000
+			});
+
+			res.json({message: "Авторизация прошла успешно!"});
+		}
+
+	} catch (err) {
+		return res.status(500).json({message: err.message});
+	}
+};
+
+module.exports.iosLogin = async (req, res) => {
+	try {
+		const { token, email, apple_id } = req.body;
+
+		const password = email + process.env.IOS_SECRET;
+
+		const passwordHash = await bcrypt.hash(password, 12);
+
+		const user = await User.findOne({email});
+
+		if(user) {
+
+			const isMatch = await bcrypt.compare(password, user.password);
+
+			if (!isMatch)
+				return res.status(400).json({message: "Неправильный пароль"});
+
+			const refreshtoken = createRefreshToken({id: user._id});
+
+			res.cookie('refreshtoken', refreshtoken, {
+				httpOnly: true,
+				path: '/api',
+				maxAge: 24 * 60 * 60 * 1000
+			});
+		} else {
+			const newUser = new User({
+				apple_id, email, password: passwordHash
+			});
+
+			await newUser.save()
+
+			const refreshtoken = createRefreshToken({id: newUser._id});
+
+			res.cookie('refreshtoken', refreshtoken, {
+				httpOnly: true,
+				path: '/api',
+				maxAge: 24*60*60*1000
+			});
+
+			res.json({message: "Авторизация прошла успешно!"});
+		}
+	} catch (err) {
+		return res.status(500).json({message: err.message});
+	}
 };
 
 const validateEmail = (email) => {

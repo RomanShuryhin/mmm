@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useEffect, useMemo} from 'react';
+import React, {FC, useCallback, useEffect} from 'react';
 import './home.scss';
 import Intro from "./intro/intro";
 import NewProducts from "./new-products/new-products";
@@ -8,11 +8,12 @@ import {useDispatch} from "react-redux";
 import {activateUser} from "../../redux/auth-reducer";
 import Banner from './banner/banner';
 import TopProducts from "./top-products/top-products";
-import {useViewSize} from "../../hooks/hooks";
+import {useDisableBodyScroll, useViewSize} from "../../hooks/hooks";
 import SwiperCore, {Navigation} from "swiper";
+import Bought from "../../common/bought/bought";
 
 
-const Home:FC<PropsType> = ({isNewMember, match, onViewHeader}) => {
+const Home:FC<PropsType> = ({isNewMember, match, onViewHeader, isBought,isFail}) => {
     let key = match.params.key;
     SwiperCore.use([Navigation]);
     let {width} = useViewSize();
@@ -40,9 +41,10 @@ const Home:FC<PropsType> = ({isNewMember, match, onViewHeader}) => {
         isNewMember && dispatch(activateUser(key));
     });
 
-
+    useDisableBodyScroll(!!isNewMember || !!isBought);
     return <>
         {isNewMember && <NewMemberPopup />}
+        {isBought && <Bought />}
         <Intro/>
         <TopProducts getCountOfSlide={() => getCountOfSlide(width)}/>
         <Banner/>
@@ -59,6 +61,8 @@ type PathParamsType = {
 // Your component own properties
 type PropsType = RouteComponentProps<PathParamsType> & {
     isNewMember?: boolean
+    isBought?: boolean
+    isFail?: boolean
     onClose?: () => void
     onViewHeader: (view: boolean) => void
 }

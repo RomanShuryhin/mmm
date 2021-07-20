@@ -16,6 +16,8 @@ const cartRouter = require('./routes/cartRouter');
 const imgWithCaptionRouter = require('./routes/imgWithCaptionRouter');
 const textBlockRouter = require('./routes/textBlockRouter');
 const bannerRouter = require('./routes/bannerRouter');
+const stripeRouter = require('./routes/stripeRouter');
+const orderRouter = require('./routes/orderRouter');
 
 const app = express();
 
@@ -47,6 +49,8 @@ app.use('/api', cartRouter);
 app.use('/api', imgWithCaptionRouter);
 app.use('/api', textBlockRouter);
 app.use('/api', bannerRouter);
+app.use('/api', stripeRouter);
+app.use('/api', orderRouter);
 
 const PORT = process.env.PORT || 5000;
 
